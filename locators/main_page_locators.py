@@ -1,9 +1,9 @@
 from selenium.webdriver.common.by import By
 
 class MainPageLocators:
-    # Кнопки заказа
-    ORDER_BUTTON_TOP = (By.XPATH, "//button[text()='Заказать']")
-    ORDER_BUTTON_BOTTOM = (By.XPATH, "(//button[text()='Заказать'])[2]")
+    # Кнопки заказа - без индексов и абсолютных путей
+    ORDER_BUTTON_TOP = (By.XPATH, "//button[contains(text(), 'Заказать')]")  # верхняя кнопка
+    ORDER_BUTTON_BOTTOM = (By.XPATH, "//div[contains(@class, 'Home_FinishButton')]//button[contains(text(), 'Заказать')]")  # нижняя кнопка
     
     # Вопросы
     QUESTION_1 = (By.ID, "accordion__heading-0")
@@ -26,5 +26,5 @@ class MainPageLocators:
     ANSWER_8 = (By.ID, "accordion__panel-7")
     
     # Логотипы
-    SCOOTER_LOGO = (By.XPATH, "//a[contains(@href, 'scooter')]")
+    SCOOTER_LOGO = (By.XPATH, "//a[@href='/']")
     YANDEX_LOGO = (By.XPATH, "//a[contains(@href, 'yandex')]")

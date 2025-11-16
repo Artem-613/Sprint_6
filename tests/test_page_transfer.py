@@ -4,9 +4,6 @@ from pages.main_page import MainPage
 
 @allure.epic("Навигация Яндекс.Самокат")
 class TestPageTransfer:
-    """
-    Тесты навигации и переходов между страницами
-    """
     
     @allure.feature("Логотипы")
     @allure.story("Переход на главную через логотип Самоката")
@@ -40,26 +37,19 @@ class TestPageTransfer:
         """
         main_page = MainPage(driver)
         
-        with allure.step("Запоминаем текущее окно"):
-            original_window = driver.current_window_handle
-        
         with allure.step("Кликаем на логотип Яндекса"):
             main_page.click_yandex_logo()
         
         with allure.step("Ожидаем открытия нового окна"):
-            main_page.wait.until(lambda driver: len(driver.window_handles) > 1)
+            main_page.wait_for_new_window()
         
         with allure.step("Переключаемся на новое окно"):
-            windows = driver.window_handles
-            new_window = [window for window in windows if window != original_window][0]
-            driver.switch_to.window(new_window)
+            main_page.switch_to_new_window()
         
         with allure.step("Проверяем что открылся Дзен"):
             main_page.wait_for_url_contains("dzen.ru", timeout=15)
             current_url = main_page.get_current_url()
             assert "dzen.ru" in current_url, \
                 f"Открылся не Дзен. Текущий URL: {current_url}"
-        
-        with allure.step("Закрываем новое окно и возвращаемся"):
-            driver.close()
-            driver.switch_to.window(original_window)
+            
+        # Убрали лишние шаги закрытия окна

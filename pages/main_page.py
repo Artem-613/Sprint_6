@@ -1,4 +1,3 @@
-from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
 
@@ -7,16 +6,18 @@ class MainPage(BasePage):
     Page Object для главной страницы Яндекс.Самокат
     """
     
+    def wait_for_page_load(self):
+        """Ожидание загрузки главной страницы"""
+        self.find_element(MainPageLocators.ORDER_BUTTON_TOP)  # ← используем метод BasePage
+    
     def click_order_button_top(self):
         """Клик на верхнюю кнопку 'Заказать'"""
         self.click_element(MainPageLocators.ORDER_BUTTON_TOP)
-        return self
     
     def click_order_button_bottom(self):
         """Клик на нижнюю кнопку 'Заказать'"""
         self.scroll_to_element(MainPageLocators.ORDER_BUTTON_BOTTOM)
         self.click_element(MainPageLocators.ORDER_BUTTON_BOTTOM)
-        return self
     
     def expand_question(self, question_number):
         """
@@ -40,8 +41,6 @@ class MainPage(BasePage):
             self.click_element(question_locator)
         else:
             raise ValueError(f"Вопрос с номером {question_number} не найден. Допустимые значения: 0-7")
-        
-        return self
     
     def get_answer_text(self, question_number):
         """
@@ -68,17 +67,10 @@ class MainPage(BasePage):
     def click_scooter_logo(self):
         """Клик на логотип Самоката"""
         self.click_element(MainPageLocators.SCOOTER_LOGO)
-        return self
     
     def click_yandex_logo(self):
         """Клик на логотип Яндекса"""
         self.click_element(MainPageLocators.YANDEX_LOGO)
-        return self
-    
-    def wait_for_page_load(self):
-        """Ожидание загрузки главной страницы"""
-        self.wait.until(EC.visibility_of_element_located(MainPageLocators.ORDER_BUTTON_TOP))
-        return self
     
     def is_order_button_visible(self):
         """Проверка видимости кнопки заказа"""
@@ -87,3 +79,12 @@ class MainPage(BasePage):
     def get_page_title(self):
         """Получить заголовок страницы"""
         return self.driver.title
+    
+    def switch_to_new_window(self):
+        """Переключиться на новое окно"""
+        windows = self.driver.window_handles
+        self.driver.switch_to.window(windows[-1])
+
+    def is_order_button_bottom_visible(self):
+        """Проверка видимости нижней кнопки заказа"""
+        return self.is_element_visible(MainPageLocators.ORDER_BUTTON_BOTTOM)
