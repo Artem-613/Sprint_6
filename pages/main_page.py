@@ -1,24 +1,29 @@
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
+import allure
 
 class MainPage(BasePage):
     """
     Page Object для главной страницы Яндекс.Самокат
     """
     
+    @allure.step("Ожидание загрузки главной страницы")
     def wait_for_page_load(self):
         """Ожидание загрузки главной страницы"""
-        self.find_element(MainPageLocators.ORDER_BUTTON_TOP)  # ← используем метод BasePage
+        self.find_element(MainPageLocators.ORDER_BUTTON_TOP)
     
+    @allure.step("Нажать верхнюю кнопку 'Заказать'")
     def click_order_button_top(self):
         """Клик на верхнюю кнопку 'Заказать'"""
         self.click_element(MainPageLocators.ORDER_BUTTON_TOP)
     
+    @allure.step("Нажать нижнюю кнопку 'Заказать'")
     def click_order_button_bottom(self):
         """Клик на нижнюю кнопку 'Заказать'"""
         self.scroll_to_element(MainPageLocators.ORDER_BUTTON_BOTTOM)
         self.click_element(MainPageLocators.ORDER_BUTTON_BOTTOM)
     
+    @allure.step("Раскрыть вопрос номер {question_number}")
     def expand_question(self, question_number):
         """
         Раскрыть вопрос по номеру
@@ -42,6 +47,7 @@ class MainPage(BasePage):
         else:
             raise ValueError(f"Вопрос с номером {question_number} не найден. Допустимые значения: 0-7")
     
+    @allure.step("Получить текст ответа на вопрос {question_number}")
     def get_answer_text(self, question_number):
         """
         Получить текст ответа на вопрос
@@ -64,27 +70,27 @@ class MainPage(BasePage):
         else:
             raise ValueError(f"Ответ для вопроса {question_number} не найден")
     
+    @allure.step("Нажать на логотип Самоката")
     def click_scooter_logo(self):
         """Клик на логотип Самоката"""
         self.click_element(MainPageLocators.SCOOTER_LOGO)
     
+    @allure.step("Нажать на логотип Яндекса")
     def click_yandex_logo(self):
         """Клик на логотип Яндекса"""
         self.click_element(MainPageLocators.YANDEX_LOGO)
     
+    @allure.step("Проверить видимость верхней кнопки заказа")
     def is_order_button_visible(self):
         """Проверка видимости кнопки заказа"""
         return self.is_element_visible(MainPageLocators.ORDER_BUTTON_TOP)
     
+    @allure.step("Получить заголовок страницы")
     def get_page_title(self):
         """Получить заголовок страницы"""
         return self.driver.title
-    
-    def switch_to_new_window(self):
-        """Переключиться на новое окно"""
-        windows = self.driver.window_handles
-        self.driver.switch_to.window(windows[-1])
 
+    @allure.step("Проверить видимость нижней кнопки заказа")
     def is_order_button_bottom_visible(self):
         """Проверка видимости нижней кнопки заказа"""
         return self.is_element_visible(MainPageLocators.ORDER_BUTTON_BOTTOM)

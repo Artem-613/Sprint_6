@@ -108,13 +108,6 @@ class BasePage:
         wait = WebDriverWait(self.driver, wait_timeout)
         wait.until(new_window_opened)
     
-    @allure.step("Переключиться на новое окно")
-    def switch_to_new_window(self):
-        """Переключиться на новое окно (последнее открытое)"""
-        windows = self.get_all_windows()
-        if len(windows) > 1:
-            self.driver.switch_to.window(windows[-1])
-    
     @allure.step("Закрыть текущее окно и переключиться на {window_index}")
     def close_current_window_and_switch_to(self, window_index=0):
         """Закрыть текущее окно и переключиться на указанное"""
@@ -122,7 +115,14 @@ class BasePage:
         windows = self.get_all_windows()
         if window_index < len(windows):
             self.driver.switch_to.window(windows[window_index])
-    
+
+    @allure.step("Переключиться на последнее открытое окно")
+    def switch_to_last_opened_window(self):
+        """Переключиться на последнее открытое окно"""
+        windows = self.get_all_windows()
+        if windows:
+            self.driver.switch_to.window(windows[-1])
+
     @allure.step("Получить текущий URL")
     def get_current_url(self):
         """Получить текущий URL"""
